@@ -35,7 +35,9 @@ const ListagemProfissionais = () => {
                     if (true === response.data.status) {
                         console.log(response.data.status)
                         setProfissionais(response.data.data)
-                    }else setProfissionais([])
+                    } else {
+                        setProfissionais([])
+                    }
                 }).catch(function (error) {
                     console.log(error)
                 });
@@ -43,7 +45,7 @@ const ListagemProfissionais = () => {
             } catch (error) {
                 console.log(error);
             }
-        }   
+        }
         fetchData();
     }
 
@@ -51,8 +53,12 @@ const ListagemProfissionais = () => {
         async function fetchData() {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/api/retornartodosProfissionais');
-                console.log(response.data.data);
-                setProfissionais(response.data.data);
+                if (true === response.data.status) {
+                    console.log(response.data.status)
+                    setProfissionais(response.data.data)
+                } else {
+                    setProfissionais([])
+                }
             } catch (error) {
                 setError("Ocorreu um erro");
                 console.log(error)
@@ -99,7 +105,7 @@ const ListagemProfissionais = () => {
                                             <th>celular</th>
                                             <th>salario</th>
                                             <th>E-mail</th>
-                                            <th>Cpf</th> 
+                                            <th>Cpf</th>
                                             <th>Ações</th>
                                         </tr>
                                     </thead>
