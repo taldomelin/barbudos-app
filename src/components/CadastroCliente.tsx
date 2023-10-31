@@ -1,9 +1,10 @@
-import React,{useState, ChangeEvent, FormEvent, useEffect} from "react";
+import React,{Component, useState, ChangeEvent, FormEvent, useEffect} from "react";
 
-import style from "../App.module.css"
+import styles from '../App.module.css';
 import Footer from "./Footer"
 import Header from "./Header"
 import axios from "axios";
+
 
 const CadastroCliente = () => {
     const [nome, setNome] = useState<string>("");
@@ -20,25 +21,25 @@ const CadastroCliente = () => {
     const [cep,setCep] = useState<string>("");
     const [complemento,setComplemento] = useState<string>("");
     const [password,setPassword] = useState<string>("");
-
+    
     const cadastrarCliente = (e: FormEvent) => {
         e.preventDefault();
 
         const dados = {
-            nome : nome,
-            celular : celular,
-            email : email,
-            cpf : cpf,
-            nascimento : nascimento,
+            nome: nome,
+            celular: celular,
+            email: email,
+            cpf: cpf,
+            nascimento: nascimento,
             cidade: cidade,
-            estado : estado,
-            pais : pais,
-            rua : rua,
-            numero : numero,
-            bairro : bairro,
-            cep : cep,
-            complemento : complemento,
-            password : password
+            estado: estado,
+            pais: pais,
+            rua: rua,
+            numero: numero,
+            bairro: bairro,
+            cep: cep,
+            complemento: complemento,
+            password: password
         }
 
         console.log(dados)
@@ -47,12 +48,12 @@ const CadastroCliente = () => {
         dados,
         {
             headers:{
-                "Accept":"aplication/json",
-                "Content-Type":"aplication/json"
+                "Accept": "aplication/json",
+                "Content-Type": "aplication/json"
             }
         }
         ).then(function(response){
-            window.location.href = "/listagemClientes"
+            console.log(response.data)
         }).catch(function(error){
             console.log(error)
         })
@@ -92,71 +93,178 @@ const CadastroCliente = () => {
         if(e.target.name === "bairro"){
             setBairro(e.target.value)
         }
+        if(e.target.name === "cep"){
+            setCep(e.target.value)
+        }
         if(e.target.name === "complemento"){
             setComplemento(e.target.value)
         }
         if(e.target.name === "password"){
             setPassword(e.target.value)
-        }
+        } 
     }
 
     return (
         <div>
-        <Header />
-            <main className={style.main}>
-                <div className='container'>
+            <Header />
+            <main className={styles.main}>
+                <div className="container">
                     <div className='card'>
                         <div className='card-body'>
-                            <h5 className='card-title'>Cadastrar Cliente</h5>
+                            <h5 className='card-tittle'>Cadastrar Cliente</h5>
                             <form onSubmit={cadastrarCliente} className='row g-3'>
                                 <div className='col-6'>
-                                    <label htmlFor="nome" className='form-label'>Nome</label>
-                                    <input type="text"
-                                    name='nome'
-                                    className='form-control'
-                                    required
-                                    onChange={handleState}
-                                    />
-                                </div>
-                                <div className='col-6'>
-                                    <label htmlFor="email" className='form-label'>E-mail</label>
-                                    <input type="text"
-                                    name='email'
-                                    className='form-control'
-                                    required
-                                    onChange={handleState}
-                                     />
-                                </div>
-                                <div className='col-6'>
-                                    <label htmlFor="cpf" className='form-label'>CPF</label>
-                                    <input type="text"
-                                    name='cpf'
+                                    <label htmlFor="nome" className='from-label'>Nome</label>
+                                    <input 
+                                    type="text" 
+                                    name='nome' 
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />
+                                    />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="password" className='form-label'>Senha</label>
-                                    <input type="text" 
-                                    name="password" 
-                                    className='form-control' 
+                                    <label htmlFor="celular" className='from-label'>celular</label>
+                                    <input 
+                                    type="text" 
+                                    name='celular' 
+                                    className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />
+                                    />                                    
                                 </div>
+                                <div className='col-6'>
+                                    <label htmlFor="email" className='from-label'>email</label>
+                                    <input 
+                                    type="text" 
+                                    name='email' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="cpf" className='from-label'>cpf</label>
+                                    <input 
+                                    type="text" 
+                                    name='cpf' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="nascimento" className='from-label'>nascimento</label>
+                                    <input 
+                                    type="text" 
+                                    name='nascimento' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="cidade" className='from-label'>cidade</label>
+                                    <input 
+                                    type="text" 
+                                    name='cidade' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="estado" className='from-label'>estado</label>
+                                    <input 
+                                    type="text" 
+                                    name='estado' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="pais" className='from-label'>pais</label>
+                                    <input 
+                                    type="text" 
+                                    name='pais' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="rua" className='from-label'>rua</label>
+                                    <input 
+                                    type="text" 
+                                    name='rua' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="numero" className='from-label'>numero</label>
+                                    <input 
+                                    type="text" 
+                                    name='numero' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="bairro" className='from-label'>bairro</label>
+                                    <input 
+                                    type="text" 
+                                    name='bairro' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="cep" className='from-label'>cep</label>
+                                    <input 
+                                    type="text" 
+                                    name='cep' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="complemento" className='from-label'>complemento</label>
+                                    <input 
+                                    type="text" 
+                                    name='complemento' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                <div className='col-6'>
+                                    <label htmlFor="password" className='from-label'>senha</label>
+                                    <input 
+                                    type="text" 
+                                    name='password' 
+                                    className='form-control'
+                                    required 
+                                    onChange={handleState}
+                                    />                                    
+                                </div>
+                                
+                               
                                 <div className='col-12'>
-                                    <button type='submit'
-                                    className='btn btn-success btn-sm'>Cadastrar</button>
+                                    <button type='submit' className='btn btn-success btn-sm'>Cadastrar</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </main>
-         <Footer />
+            <Footer />
         </div>
     );
 }
-
 export default CadastroCliente;

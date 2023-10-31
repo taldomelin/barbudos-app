@@ -4,15 +4,15 @@ import React,{
 } from "react";
 import style from '../App.module.css';
 import { CadastroClienteInterface } from "../interface/CadastroCliente";
-const listagemClientes = () => {
-    const[nome, setNome] = useState<CadastroClienteInterface[]>([]);
-    const[pesquisa, setPesquisa] = useState<string>("")
-    const[error, setError] = useState("");
+const ListagemClientes = () => {
+    const[nome, SetNome] = useState<CadastroClienteInterface[]>([]);
+    const[pesquisa, SetPesquisa] = useState<string>("")
+    const[error, SetError] = useState("");
 
 
     const handleState = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.name === "pesquisa") {
-            setPesquisa(e.target.name);
+            SetPesquisa(e.target.name);
         }
     }
 
@@ -29,7 +29,7 @@ const listagemClientes = () => {
                         "Content-Type": "application/json"
                     }
                 }).then(function(response) {
-                    setNome(response.data.data);
+                    SetNome(response.data.data);
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -46,9 +46,9 @@ const listagemClientes = () => {
         async function fatchData() {
             try{
                 const response = await axios.get('http://127.0.0.1:8000/api/retornarTudo')
-                setNome(response.data.data);
+                SetNome(response.data.data);
             } catch (error) {
-                setError("Ocrreu um erro");
+                SetError("Ocorreu um erro");
                 console.log(error)
             }
         }
@@ -140,4 +140,4 @@ const listagemClientes = () => {
         </div>
     );
 }
-export default listagemClientes;
+export default ListagemClientes;
