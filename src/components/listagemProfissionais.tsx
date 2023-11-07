@@ -102,8 +102,8 @@ const ListagemProfissionais = () => {
                                         <tr>
                                             <th>ID</th>
                                             <th>Nome</th>
-                                            <th>celular</th>
                                             <th>salario</th>
+                                            <th>celular</th>
                                             <th>E-mail</th>
                                             <th>Cpf</th>
                                             <th>Ações</th>
