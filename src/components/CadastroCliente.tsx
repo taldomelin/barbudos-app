@@ -21,6 +21,9 @@ const CadastroCliente = () => {
     const [cep,setCep] = useState<string>("");
     const [complemento,setComplemento] = useState<string>("");
     const [password,setPassword] = useState<string>("");
+    const [localidade, setLocalidade] = useState<string>("");
+    const [uf, setUf] = useState<string>("");
+    const [erro, setErro] = useState<string>("");
     
     const cadastrarCliente = (e: FormEvent) => {
         e.preventDefault();
@@ -54,9 +57,31 @@ const CadastroCliente = () => {
         }
         ).then(function(response){
             console.log(response.data)
+            window.location.href = "/listagem"
         }).catch(function(error){
             console.log(error)
         })
+    }
+    const findCep = (e: FormEvent) => {
+
+        e.preventDefault();
+
+        fetch('https://viacep.com.br/ws/' + cep + '/json',
+            {
+                method: 'GET'
+            }).then(response => response.json())
+            .then(
+                data => {
+                    setLocalidade(data.localidade);
+                    setCep(data.cep);
+                    setUf(data.uf);
+                    setErro("")
+                }
+            ).catch(error => {
+                setErro("Pesquisa Inválida");
+            });
+
+        console.log("Localidade:" + localidade);
     }
 
     const handleState = (e: ChangeEvent<HTMLInputElement>)=>{
@@ -124,7 +149,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="celular" className='from-label'>celular</label>
+                                    <label htmlFor="celular" className='from-label'>Celular</label>
                                     <input 
                                     type="text" 
                                     name='celular' 
@@ -134,7 +159,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="email" className='from-label'>email</label>
+                                    <label htmlFor="email" className='from-label'>E-mail</label>
                                     <input 
                                     type="text" 
                                     name='email' 
@@ -144,7 +169,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="cpf" className='from-label'>cpf</label>
+                                    <label htmlFor="cpf" className='from-label'>CPF</label>
                                     <input 
                                     type="text" 
                                     name='cpf' 
@@ -154,7 +179,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="nascimento" className='from-label'>nascimento</label>
+                                    <label htmlFor="nascimento" className='from-label'>Nascimento</label>
                                     <input 
                                     type="date" 
                                     name='nascimento' 
@@ -164,7 +189,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="cidade" className='from-label'>cidade</label>
+                                    <label htmlFor="cidade" className='from-label'>Cidade</label>
                                     <input 
                                     type="text" 
                                     name='cidade' 
@@ -174,7 +199,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="estado" className='from-label'>estado</label>
+                                    <label htmlFor="estado" className='from-label'>Estado</label>
                                     <input 
                                     type="text" 
                                     name='estado' 
@@ -184,7 +209,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="pais" className='from-label'>pais</label>
+                                    <label htmlFor="pais" className='from-label'>Pais</label>
                                     <input 
                                     type="text" 
                                     name='pais' 
@@ -194,7 +219,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="rua" className='from-label'>rua</label>
+                                    <label htmlFor="rua" className='from-label'>Rua</label>
                                     <input 
                                     type="text" 
                                     name='rua' 
@@ -204,7 +229,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="numero" className='from-label'>numero</label>
+                                    <label htmlFor="numero" className='from-label'>Numero</label>
                                     <input 
                                     type="text" 
                                     name='numero' 
@@ -214,7 +239,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="bairro" className='from-label'>bairro</label>
+                                    <label htmlFor="bairro" className='from-label'>Bairro</label>
                                     <input 
                                     type="text" 
                                     name='bairro' 
@@ -224,7 +249,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="cep" className='from-label'>cep</label>
+                                    <label htmlFor="cep" className='from-label'>CEP</label>
                                     <input 
                                     type="text" 
                                     name='cep' 
@@ -234,7 +259,7 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="complemento" className='from-label'>complemento</label>
+                                    <label htmlFor="complemento" className='from-label'>Complemento</label>
                                     <input 
                                     type="text" 
                                     name='complemento' 
@@ -244,9 +269,9 @@ const CadastroCliente = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="password" className='from-label'>senha</label>
+                                    <label htmlFor="password" className='from-label'>Senha</label>
                                     <input 
-                                    type="text" 
+                                    type="password" 
                                     name='password' 
                                     className='form-control'
                                     required 

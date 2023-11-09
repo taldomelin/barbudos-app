@@ -1,138 +1,130 @@
 import axios from "axios";
-import React,{
+import React, {
     Component, useState, ChangeEvent, FormEvent, useEffect
 } from "react";
-import style from '../App.module.css';
+import { Link } from "react-router-dom";
+import styles from '../App.module.css';
 import { CadastroClienteInterface } from "../interface/CadastroCliente";
+
 const ListagemClientes = () => {
-    const[nome, SetNome] = useState<CadastroClienteInterface[]>([]);
-    const[pesquisa, SetPesquisa] = useState<string>("")
-    const[error, SetError] = useState("");
+    const [clientes, setClientes] = useState<CadastroClienteInterface[]>([]);
+    const [pesquisa, setPesquisa] = useState<string>("")
+    const [error, setError] = useState("");
 
 
     const handleState = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.name === "pesquisa") {
-            SetPesquisa(e.target.name);
+            setPesquisa(e.target.value);
         }
     }
 
-    const buscar = (e: FormEvent)=> {
+    const buscar = (e: FormEvent) => {
         e.preventDefault();
 
         async function fetchData() {
             try {
                 const response = await axios.post('http://127.0.0.1:8000/api/nome',
-                { nome: pesquisa },
-                {
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
+                    { nome: pesquisa, email: pesquisa  },
+                    {
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        }
                     }
-                }).then(function(response) {
-                    SetNome(response.data.data);
+                
+                ).then(function (response) {
+                    if (true === response.data.status) {
+                        console.log(response.data.status)
+                        setClientes(response.data.data)
+                    }else setClientes([])
                 }).catch(function (error) {
-                    console.log(error);
+                    console.log(error)
                 });
-               
-            }catch(error){
+                
+                
+
+            } catch (error) {
                 console.log(error);
             }
-
-        }
+        }   
+        
         fetchData();
+        
     }
 
-    useEffect(() =>{
-        async function fatchData() {
-            try{
-                const response = await axios.get('http://127.0.0.1:8000/api/retornarTudo')
-                SetNome(response.data.data);
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/retornarTudo');
+                console.log(response.data.data);
+                setClientes(response.data.data);
             } catch (error) {
-                SetError("Ocorreu um erro");
+                setError("Ocorreu um erro");
                 console.log(error)
             }
         }
 
-        fatchData();
+        fetchData();
     }, []);
 
     return (
         <div>
-            <main className={style.main}>
+            <main className={styles.main}>
                 <div className='container'>
-   
                     <div className='col-md mb-3'>
                         <div className='card'>
                             <div className='card-body'>
                                 <h5 className='card-title'>Pesquisar</h5>
                                 <form onSubmit={buscar} className='row'>
                                     <div className='col-10'>
-                                        <input type="text" name="pesquisa"
-                                            className='form-control'
+                                        <input type="text" name='pesquisa' className='form-control'
                                             onChange={handleState} />
+
                                     </div>
                                     <div className='col-1'>
                                         <button type='submit' className='btn btn-success'>Pesquisar</button>
                                     </div>
+
                                 </form>
                             </div>
                         </div>
                     </div>
-   
-   
-                    <div className='card'>
-                        <div className='card-body'>
-                            <h5 className='card-title'>
-                                Listagem de Usuários
-                            </h5>
-                            <table className='table table-hover '>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th>celular</th>
-                                        <th>email</th>
-                                        <th>cpf</th>
-                                        <th>nascimento</th>
-                                        <th>cidade</th>
-                                        <th>estado</th>
-                                        <th>pais</th>
-                                        <th>rua</th>
-                                        <th>numero</th>
-                                        <th>bairro</th>
-                                        <th>cep</th>
-                                        <th>complemento</th>
-                                        <th>senha</th>
-                                        <th>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {nome.map(nome => (
-                                        <tr key={nome.id}>
-                                            <td>{nome.id}</td>
-                                            <td>{nome.nome}</td>
-                                            <td>{nome.celular}</td>
-                                            <td>{nome.email}r</td>
-                                            <td>{nome.cpf}r</td>
-                                            <td>{nome.nascimento}r</td>
-                                            <td>{nome.cidade}r</td>
-                                            <td>{nome.estado}r</td>
-                                            <td>{nome.pais}r</td>
-                                            <td>{nome.rua}r</td>
-                                            <td>{nome.numero}r</td>
-                                            <td>{nome.bairro}r</td>
-                                            <td>{nome.cep}r</td>
-                                            <td>{nome.complemento}r</td>
-                                            <td>{nome.password}r</td>
 
-                                            <td>
-                                                <a href="#" className='btn btn-primary btn-sm'>Editar</a>
-                                                <a href="#" className='btn btn-danger btn-sm'>Excluir</a>
-                                            </td>
+                    <div className='container'>
+                        <div className='card'>
+                            <div className='card-body '>
+                                <h5 className='card-title'>
+                                    Listagem de Usuários
+                                </h5>
+                                <table className='table table-hover '>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nome</th>
+                                            <th>celular</th>
+                                            <th>email</th>
+                                            <th>cpf</th> 
+                                            <th>Ações</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {clientes.map(clientes => (
+                                            <tr key={clientes.id}>
+                                                <td>{clientes.id}</td>
+                                                <td>{clientes.nome}</td>
+                                                <td>{clientes.celular}</td>
+                                                <td>{clientes.email}</td>
+                                                <td>{clientes.cpf}</td>
+
+                                                <td>
+                                                <Link to={"/editar/"+ clientes.id}  className='btn btn-primary btn-sm' >Editar</Link>
+                                                    <a href="#" className='btn btn-danger btn-sm'>Excluir</a>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

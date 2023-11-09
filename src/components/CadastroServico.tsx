@@ -36,7 +36,13 @@ const CadastroServico = () => {
         }
         ).then(function(response){
             console.log(response.data)
-            window.location.href = "/listagemServico"
+            if (response.data.success == true){
+                window.location.href = "/listagemServico"
+            }else{
+                console.log(response.data)
+                alert("ocorreu um erro no cadastro do serviço");
+            }
+            
         }).catch(function(error){
             console.log(error)
         })
@@ -78,7 +84,7 @@ const CadastroServico = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="descricao" className='from-label'>descrição</label>
+                                    <label htmlFor="descricao" className='from-label'>Descrição</label>
                                     <input 
                                     type="text" 
                                     name='descricao' 
@@ -88,7 +94,7 @@ const CadastroServico = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="duracao" className='from-label'>duração</label>
+                                    <label htmlFor="duracao" className='from-label'>Duração</label>
                                     <input 
                                     type="text" 
                                     name='duracao' 
@@ -98,7 +104,7 @@ const CadastroServico = () => {
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="preco" className='from-label'>preço</label>
+                                    <label htmlFor="preco" className='from-label'>Preço</label>
                                     <input 
                                     type="text" 
                                     name='preco' 
