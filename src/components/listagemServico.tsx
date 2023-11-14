@@ -13,7 +13,7 @@ const ListagemServicos = () => {
 
     const handleState = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.name === "pesquisaServico") {
-            setPesquisa(e.target.name);
+            setPesquisa(e.target.value);
         }
     }
 
@@ -22,8 +22,8 @@ const ListagemServicos = () => {
 
         async function fetchData() {
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/Profissional',
-                    { nome: pesquisa, email: pesquisa },
+                const response = await axios.post('http://127.0.0.1:8000/api/noomes',
+                    { nome: pesquisa},
                     {
                         headers: {
                             "Accept": "application/json",
