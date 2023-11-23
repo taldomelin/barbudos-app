@@ -17,13 +17,37 @@ const ListagemClientes = () => {
             setPesquisa(e.target.value);
         }
     }
+    function handleDelete(id: number) {
+        const confirm = window.confirm('Deseja excluir?');
+        if (confirm)
+            axios.delete('http://127.0.0.1:8000/api/cliente/delete/' + id)
+                .then(function (response) {
+                    window.location.href = "/cliente/listagem"
+                }).catch(function (error) {
+                    console.log('Ocorreu um erro ao excluir');
+                })
+    }
+
+    function RedefinirSenha(id: number) {
+        const confirm = window.confirm('Deseja redefinir a senha?');
+        if (confirm)
+        axios.put('http://127.0.0.1:8000/api/cliente/esqueciSenha/' + id)
+            .then(function (response) {
+               
+            }).catch(function (error) {
+                console.log('Ocorreu um erro ao alterar a senha');
+            })
+    }
+
+     
+
 
     const buscar = (e: FormEvent) => {
         e.preventDefault();
 
         async function fetchData() {
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/nome',
+                const response = await axios.post('http://127.0.0.1:8000/api/cliente/pesquisarPorNome',
                     { nome: pesquisa, email: pesquisa  },
                     {
                         headers: {
@@ -55,7 +79,7 @@ const ListagemClientes = () => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/retornarTudo');
+                const response = await axios.get('http://127.0.0.1:8000/api/cliente/retornarTudo');
                 console.log(response.data.data);
                 setClientes(response.data.data);
             } catch (error) {
@@ -118,7 +142,8 @@ const ListagemClientes = () => {
 
                                                 <td>
                                                 <Link to={"/editar/"+ clientes.id}  className='btn btn-primary btn-sm' >Editar</Link>
-                                                    <a href="#" className='btn btn-danger btn-sm'>Excluir</a>
+                                                    <a onClick={e => handleDelete(clientes.id)} className='btn btn-danger btn-sm'>Excluir</a>
+                                                    <a onClick={e => RedefinirSenha(clientes.id)} className='btn btn-secondary btn-sm'>Redefinir Senha</a>
                                                 </td>
                                             </tr>
                                         ))}

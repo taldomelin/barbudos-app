@@ -47,7 +47,7 @@ const CadastroCliente = () => {
 
         console.log(dados)
 
-        axios.post('http://127.0.0.1:8000/api/criarCliente',
+        axios.post('http://127.0.0.1:8000/api/cliente/criar',
         dados,
         {
             headers:{
@@ -72,9 +72,9 @@ const CadastroCliente = () => {
             }).then(response => response.json())
             .then(
                 data => {
-                    setLocalidade(data.localidade);
-                    setCep(data.cep);
-                    setUf(data.uf);
+                    setCidade(data.localidade);
+                    setPais(data.pais)
+                    setEstado(data.uf);
                     setErro("")
                 }
             ).catch(error => {
@@ -128,6 +128,8 @@ const CadastroCliente = () => {
             setPassword(e.target.value)
         } 
     }
+
+    
 
     return (
         <div>
@@ -192,6 +194,7 @@ const CadastroCliente = () => {
                                     <label htmlFor="cidade" className='from-label'>Cidade</label>
                                     <input 
                                     type="text" 
+                                    value={cidade}
                                     name='cidade' 
                                     className='form-control'
                                     required 
@@ -203,6 +206,7 @@ const CadastroCliente = () => {
                                     <input 
                                     type="text" 
                                     name='estado' 
+                                    value={estado}
                                     className='form-control'
                                     required 
                                     onChange={handleState}
@@ -212,6 +216,7 @@ const CadastroCliente = () => {
                                     <label htmlFor="pais" className='from-label'>Pais</label>
                                     <input 
                                     type="text" 
+                                    value={pais}
                                     name='pais' 
                                     className='form-control'
                                     required 
@@ -222,6 +227,7 @@ const CadastroCliente = () => {
                                     <label htmlFor="rua" className='from-label'>Rua</label>
                                     <input 
                                     type="text" 
+                                    value={rua}
                                     name='rua' 
                                     className='form-control'
                                     required 
@@ -242,6 +248,7 @@ const CadastroCliente = () => {
                                     <label htmlFor="bairro" className='from-label'>Bairro</label>
                                     <input 
                                     type="text" 
+                                    value={bairro}
                                     name='bairro' 
                                     className='form-control'
                                     required 
@@ -253,6 +260,7 @@ const CadastroCliente = () => {
                                     <input 
                                     type="text" 
                                     name='cep' 
+                                    onBlur={findCep}
                                     className='form-control'
                                     required 
                                     onChange={handleState}
@@ -281,7 +289,7 @@ const CadastroCliente = () => {
                                 
                                
                                 <div className='col-12'>
-                                    <button type='submit' className='btn btn-success btn-sm'>Cadastrar</button>
+                                    <button  type='submit' className='btn btn-success btn-sm'>Cadastrar</button>
                                 </div>
                             </form>
                         </div>

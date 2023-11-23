@@ -1,53 +1,67 @@
-import React,{Component, useState, ChangeEvent, FormEvent, useEffect} from "react";
+import React, { Component, useState, ChangeEvent, FormEvent, useEffect } from "react";
 
-import styles from '../App.module.css';
-import Footer from "./Footer"
-import Header from "./Header"
+import styles  from "../App.module.css";
+import Header from "./Header";
+import Footer from "./Footer";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 
-const CadastroServico = () => {
+
+const EditarProfissional = () => {
+
     const [nome, setNome] = useState<string>("");
-    const [descricao,setDescricao] = useState<string>("");
-    const [duracao,setDuracao] = useState<string>("");
-    const [preco,setPreco] = useState<string>("");
-    
-    
-    const cadastrarServico = (e: FormEvent) => {
+    const [descricao, setDescricao] = useState<string>("");
+    const [duracao, setDuracao] = useState<string>("");
+    const [preco, setPreco] = useState<string>("");
+    const [id, setId] = useState<string>();
+
+    const parametro = useParams();
+
+    const atualizar = (e: FormEvent) => {
+
         e.preventDefault();
 
         const dados = {
+            id:id,
             nome: nome,
             descricao: descricao,
             duracao: duracao,
             preco: preco,
-           
+
         }
-
-        console.log(dados)
-
-        axios.post('http://127.0.0.1:8000/api/servico/criar',
+        axios.put("http://127.0.0.1:8000/api/servico/atualizar",
         dados,
         {
-            headers:{
-                "Accept": "aplication/json",
-                "Content-Type": "aplication/json"
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             }
-        }
-        ).then(function(response){
-            console.log(response.data)
-            window.location.href = "/listagemServico"
-            if (response.data.success == true){
-                
-            }else{
-                console.log(response.data)
-                alert("ocorreu um erro no cadastro do serviço");
-            }
-            
+        }).then(function(response){
+            window.location.href = "/listagemServico";
         }).catch(function(error){
-            console.log(error)
-        })
+            console.log('Ocorreu um erroao atualizar');
+        });
+
     }
+
+    useEffect(() => {
+         async function fetcData() {
+            try{
+                const response = await axios.post("http://127.0.0.1:8000/api/servico/pesquisarID/"+parametro.id);
+                setNome(response.data.data.nome);
+                setDescricao(response.data.data.descricao);
+                setDuracao(response.data.data.duracao);
+                setPreco(response.data.data.preco);
+                setId(response.data.data.id);
+                console.log(response)
+            } catch(error){
+                console.log("error ao buscar dados da api");
+            }
+         }
+         fetcData();
+    }, []); 
+
 
     const handleState = (e: ChangeEvent<HTMLInputElement>)=>{
         if(e.target.name === "nome"){
@@ -72,9 +86,9 @@ const CadastroServico = () => {
                 <div className="container">
                     <div className='card'>
                         <div className='card-body'>
-                            <h5 className='card-tittle'>Cadastrar Serviço</h5>
-                            <form onSubmit={cadastrarServico} className='row g-3'>
-                                <div className='col-6'>
+                            <h5 className='card-tittle'>Atualizar Serviço</h5>
+                            <form onSubmit={atualizar} className='row g-3'>
+                            <div className='col-6'>
                                     <label htmlFor="nome" className='from-label'>Nome</label>
                                     <input 
                                     type="text" 
@@ -82,43 +96,44 @@ const CadastroServico = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
+                                    value={nome}
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="descricao" className='from-label'>Descrição</label>
+                                    <label htmlFor="celular" className='from-label'>descrição</label>
                                     <input 
                                     type="text" 
                                     name='descricao' 
                                     className='form-control'
                                     required 
                                     onChange={handleState}
+                                    value={descricao}
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="duracao" className='from-label'>Duração</label>
+                                    <label htmlFor="duracao" className='from-label'>duração</label>
                                     <input 
                                     type="text" 
                                     name='duracao' 
                                     className='form-control'
                                     required 
                                     onChange={handleState}
+                                    value={duracao}
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="preco" className='from-label'>Preço</label>
+                                    <label htmlFor="preco" className='from-label'>preço</label>
                                     <input 
                                     type="text" 
                                     name='preco' 
                                     className='form-control'
                                     required 
                                     onChange={handleState}
+                                    value={preco}
                                     />                                    
                                 </div>
-                                
-                                
-                               
                                 <div className='col-12'>
-                                    <button type='submit' className='btn btn-success btn-sm'>Cadastrar</button>
+                                    <button type='submit' className='btn btn-success btn-sm'>Atualizar</button>
                                 </div>
                             </form>
                         </div>
@@ -129,4 +144,5 @@ const CadastroServico = () => {
         </div>
     );
 }
-export default CadastroServico;
+
+export default EditarProfissional;

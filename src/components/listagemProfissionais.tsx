@@ -23,7 +23,8 @@ const ListagemProfissionais = () => {
 
         async function fetchData() {
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/Profissional',
+                console.log(pesquisa);
+                const response = await axios.post('http://127.0.0.1:8000/api/profissional/pesquisarNome',
                     { nome: pesquisa, email: pesquisa },
                     {
                         headers: {
@@ -56,11 +57,20 @@ const ListagemProfissionais = () => {
         fetchData();
 
     }
-
+    function handleDelete(id: number) {
+        const confirm = window.confirm('Você tem certeza que deseja excluir?');
+        if (confirm)
+            axios.delete('http://127.0.0.1:8000/api/profissional/deletar/' + id)
+                .then(function (response) {
+                    window.location.href = "/listagem/Profissional"
+                }).catch(function (error) {
+                    console.log('Ocorreu um erro ao excluir');
+                })
+    }
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/retornartodosProfissionais');
+                const response = await axios.get('http://127.0.0.1:8000/api/profissional/retornarTodos');
                 console.log(response);
                 setProfissionais(response.data.data);
             } catch (error) {
@@ -125,7 +135,8 @@ const ListagemProfissionais = () => {
 
                                                 <td>
                                                 <Link to={"/editarProfissopnal/"+ profissionais.id}  className='btn btn-primary btn-sm' >Editar</Link>
-                                                    <a href="#" className='btn btn-danger btn-sm'>Excluir</a>
+                                                <a onClick={e => handleDelete(profissionais.id)} className='btn btn-danger btn-sm'>Excluir</a>
+                                                   
                                                 </td>
                                             </tr>
                                         ))}

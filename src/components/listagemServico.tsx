@@ -2,6 +2,7 @@ import axios from "axios";
 import React, {
     Component, useState, ChangeEvent, FormEvent, useEffect
 } from "react";
+import { Link } from "react-router-dom";
 import styles from '../App.module.css';
 import { CadastroServicoInterface } from "../interface/CadastroServico";
 
@@ -22,7 +23,8 @@ const ListagemServicos = () => {
 
         async function fetchData() {
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/noomes',
+                console.log(pesquisa);
+                const response = await axios.post('http://127.0.0.1:8000/api/servico/pesquisarNome',
                     { nome: pesquisa},
                     {
                         headers: {
@@ -32,10 +34,10 @@ const ListagemServicos = () => {
                     }
 
                 ).then(function (response) {
-                    
                     console.log(response.data)
-                    if (true === response.data.status) {
+                    if (true == response.data.status) {
                         console.log(response.data)
+                        window.location.href = "/listagemServico";
                         setServicos(response.data.data)
                     } else {
 
@@ -44,22 +46,37 @@ const ListagemServicos = () => {
                 }).catch(function (error) {
                     console.log(error)
                 });
-
-
-
             } catch (error) {
                 console.log(error);
             }
         }
 
         fetchData();
-
     }
-
+    function handleDelete(id: number) {
+        const confirm = window.confirm('Você tem certeza que deseja excluir?');
+        if (confirm)
+            axios.delete('http://127.0.0.1:8000/api/servico/deletar/' + id)
+                .then(function (response) {
+                    window.location.href = "/listagem/servico/"
+                }).catch(function (error) {
+                    console.log('Ocorreu um erro ao excluir');
+                })
+    }
+    function RedefinirSenha(id: number) {
+        const confirm = window.confirm('Deseja redefinir a senha?');
+        if (confirm)
+        axios.put('http://127.0.0.1:8000/api/cliente/esqueciSenha/' + id)
+            .then(function (response) {
+               
+            }).catch(function (error) {
+                console.log('Ocorreu um erro ao alterar a senha');
+            })
+    }
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/retornarTodos');
+                const response = await axios.get('http://127.0.0.1:8000/api/servico/retornarTodos');
                 console.log(response.data.data);
                 setServicos(response.data.data);
             } catch (error) {
@@ -108,6 +125,7 @@ const ListagemServicos = () => {
                                             <th>Descrição</th>
                                             <th>Duraçao</th>
                                             <th>Preço</th>
+                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -116,13 +134,14 @@ const ListagemServicos = () => {
                                                 <td>{servicos.id}</td>
                                                 <td>{servicos.nome}</td>
                                                 <td>{servicos.descricao}</td>
-                                                <td>{servicos.duracao}r</td>
-                                                <td>{servicos.preco}r</td>
+                                                <td>{servicos.duracao}</td>
+                                                <td>{servicos.preco}</td>
                                                
 
                                                 <td>
-                                                    <a href="#" className='btn btn-primary btn-sm'>Editar</a>
-                                                    <a href="#" className='btn btn-danger btn-sm'>Excluir</a>
+                                                <Link to={"/editarServico/"+ servicos.id}  className='btn btn-primary btn-sm' >Editar</Link>
+                                                <a onClick={e => handleDelete(servicos.id)} className='btn btn-danger btn-sm'>Excluir</a>
+                                                    <button type="button" className="btn btn-secondary btn-sm">Redefinir Senha</button>
                                                 </td>
                                             </tr>
                                         ))}

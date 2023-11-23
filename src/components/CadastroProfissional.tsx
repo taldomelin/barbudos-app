@@ -46,7 +46,7 @@ const CadastroProfssional = () => {
 
         console.log(dados)
 
-        axios.post('http://127.0.0.1:8000/api/criarProfissional',
+        axios.post('http://127.0.0.1:8000/api/profissional/criar',
         dados,
         {
             headers:{
