@@ -67,6 +67,16 @@ const ListagemProfissionais = () => {
                     console.log('Ocorreu um erro ao excluir');
                 })
     }
+    function RedefinirSenha(id: number) {
+        const confirm = window.confirm('Deseja redefinir a senha?');
+        if (confirm)
+        axios.put('http://127.0.0.1:8000/api/profissional/esqueciSenha/' + id)
+            .then(function (response) {
+               
+            }).catch(function (error) {
+                console.log('Ocorreu um erro ao alterar a senha');
+            })
+    }
     useEffect(() => {
         async function fetchData() {
             try {
@@ -136,7 +146,7 @@ const ListagemProfissionais = () => {
                                                 <td>
                                                 <Link to={"/editarProfissopnal/"+ profissionais.id}  className='btn btn-primary btn-sm' >Editar</Link>
                                                 <a onClick={e => handleDelete(profissionais.id)} className='btn btn-danger btn-sm'>Excluir</a>
-                                                   
+                                                <a onClick={e => RedefinirSenha(profissionais.id)} className='btn btn-secondary btn-sm'>Redefinir Senha</a>
                                                 </td>
                                             </tr>
                                         ))}
