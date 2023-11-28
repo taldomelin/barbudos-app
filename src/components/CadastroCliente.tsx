@@ -57,7 +57,7 @@ const CadastroCliente = () => {
         }
         ).then(function(response){
             console.log(response.data)
-            window.location.href = "/listagem"
+            window.location.href = "/cliente/listagem"
         }).catch(function(error){
             console.log(error)
         })
@@ -75,6 +75,7 @@ const CadastroCliente = () => {
                     setCidade(data.localidade);
                     setPais(data.pais)
                     setEstado(data.uf);
+                    setBairro(data.bairro)
                     setErro("")
                 }
             ).catch(error => {

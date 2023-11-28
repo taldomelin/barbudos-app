@@ -80,11 +80,8 @@ const ListagemClientes = () => {
         async function fetchData() {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/api/cliente/retornarTudo');
-                if(response.data.status){
-                    setClientes(response.data.data);
-                }
-                
-                
+                console.log(response.data.data);
+                setClientes(response.data.data);
             } catch (error) {
                 setError("Ocorreu um erro");
                 console.log(error)
@@ -144,8 +141,8 @@ const ListagemClientes = () => {
                                                 <td>{clientes.cpf}</td>
 
                                                 <td>
-                                                <Link to={"/editar/"+ clientes.id}  className='btn btn-primary btn-sm' >Editar</Link>
-                                                    <a onClick={e => handleDelete(clientes.id)} className='btn m-1 btn-danger btn-sm'>Excluir</a>
+                                                <Link to={"/cliente/editar/"+ clientes.id}  className='btn btn-primary btn-sm' >Editar</Link>
+                                                    <a onClick={e => handleDelete(clientes.id)} className='btn btn-danger btn-sm'>Excluir</a>
                                                     <a onClick={e => RedefinirSenha(clientes.id)} className='btn btn-secondary btn-sm'>Redefinir Senha</a>
                                                 </td>
                                             </tr>

@@ -225,11 +225,10 @@ const CadastroProfssional = () => {
                                     <input 
                                     type="text" 
                                     name='pais' 
-                                    
+                                    value={pais}
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    value={pais}
                                     />                                    
                                 </div>
                                 <div className='col-6'>

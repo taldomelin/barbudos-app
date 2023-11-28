@@ -80,18 +80,18 @@ const EditarAgenda = () => {
                             <div className='col-6'>
                                     <label htmlFor="profissional_Id" className='from-label'>ID do profissional</label>
                                     <input 
-                                    type="text" 
-                                    name='nome' 
+                                    type="integer" 
+                                    name='profissional_Id' 
                                     className='form-control'
                                     required 
                                     onChange={handleState}
                                     />                                    
                                 </div>
                                 <div className='col-6'>
-                                    <label htmlFor="descricao" className='from-label'>ID do cliente</label>
+                                    <label htmlFor="setCliente_Id" className='from-label'>ID do cliente</label>
                                     <input 
-                                    type="text" 
-                                    name='descricao' 
+                                    type="integer" 
+                                    name='setCliente_Id' 
                                     className='form-control'
                                     required 
                                     onChange={handleState}

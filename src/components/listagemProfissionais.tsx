@@ -144,7 +144,7 @@ const ListagemProfissionais = () => {
                                                 <td>{profissionais.cpf}</td>
 
                                                 <td>
-                                                <Link to={"/editarProfissopnal/"+ profissionais.id}  className='btn btn-primary btn-sm' >Editar</Link>
+                                                <Link to={"/editar/Servico/"+ profissionais.id}  className='btn btn-primary btn-sm' >Editar</Link>
                                                 <a onClick={e => handleDelete(profissionais.id)} className='btn btn-danger btn-sm'>Excluir</a>
                                                 <a onClick={e => RedefinirSenha(profissionais.id)} className='btn btn-secondary btn-sm'>Redefinir Senha</a>
                                                 </td>

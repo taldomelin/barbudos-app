@@ -1,148 +1,152 @@
-import React, { Component, useState, ChangeEvent, FormEvent, useEffect } from "react";
-
-import styles  from "../App.module.css";
-import Header from "./Header";
-import Footer from "./Footer";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+import React, {
+    Component, useState, ChangeEvent, FormEvent, useEffect
+} from "react";
+import { Link } from "react-router-dom";
+import styles from '../App.module.css';
+import { CadastroAgendaInterface } from "../interface/CadastroAgenda";
 
 
+const ListagemAgenda = () => {
+    const [agenda, setAgenda] = useState<CadastroAgendaInterface[]>([]);
+    const [pesquisa, setPesquisa] = useState<string>("")
+    const [error, setError] = useState("");
 
-const EditarProfissional = () => {
 
-    const [nome, setNome] = useState<string>("");
-    const [descricao, setDescricao] = useState<string>("");
-    const [duracao, setDuracao] = useState<string>("");
-    const [preco, setPreco] = useState<string>("");
-    const [id, setId] = useState<string>();
-
-    const parametro = useParams();
-
-    const atualizar = (e: FormEvent) => {
-
+    const handleState = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.name === "pesquisaAgenda") {
+            setPesquisa(e.target.value);
+        }
+    }
+    const buscar = (e: FormEvent) => {
         e.preventDefault();
 
-        const dados = {
-            id:id,
-            nome: nome,
-            descricao: descricao,
-            duracao: duracao,
-            preco: preco,
+        async function fetchData() {
+            try {
+                console.log(pesquisa);
+                const response = await axios.post('http://127.0.0.1:8000/api/agenda/pesquisaDataHora',
+                    {  dataHora: pesquisa },
+                    {
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        }
+                    }
 
-        }
-        axios.put("http://127.0.0.1:8000/api/servico/atualizar",
-        dados,
-        {
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
+                ).then(function (response) {
+                    
+                    console.log(response.data)
+                    if (true === response.data.status) {
+                        console.log(response.data)
+                        setAgenda(response.data.data)
+                    } else {
+
+                        setAgenda([])
+                    }
+                }).catch(function (error) {
+                    console.log(error)
+                });
+
+
+
+            } catch (error) {
+                console.log(error);
             }
-        }).then(function(response){
-            window.location.href = "/listagem/Servico";
-        }).catch(function(error){
-            console.log('Ocorreu um erroao atualizar');
-        });
+        }
+
+        fetchData();
 
     }
-
+    function handleDelete(id: number) {
+        const confirm = window.confirm('Você tem certeza que deseja excluir?');
+        if (confirm)
+            axios.delete('http://127.0.0.1:8000/api/agenda/delete/' + id)
+                .then(function (response) {
+                    window.location.href = "/listagem/agenda"
+                }).catch(function (error) {
+                    console.log('Ocorreu um erro ao excluir');
+                })
+    }
     useEffect(() => {
-         async function fetcData() {
-            try{
-                const response = await axios.post("http://127.0.0.1:8000/api/servico/pesquisarID/"+parametro.id);
-                setNome(response.data.data.nome);
-                setDescricao(response.data.data.descricao);
-                setDuracao(response.data.data.duracao);
-                setPreco(response.data.data.preco);
-                setId(response.data.data.id);
-                console.log(response)
-            } catch(error){
-                console.log("error ao buscar dados da api");
+        async function fetchData() {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/agenda/retornaTodos');
+                console.log(response);
+                setAgenda(response.data.data);
+            } catch (error) {
+                setError("Ocorreu um erro");
+                console.log(error)
             }
-         }
-         fetcData();
-    }, []); 
+        }
 
-
-    const handleState = (e: ChangeEvent<HTMLInputElement>)=>{
-        if(e.target.name === "nome"){
-            setNome(e.target.value)
-        }
-        if(e.target.name === "descricao"){
-            setDescricao(e.target.value)
-        }
-        if(e.target.name === "duracao"){
-            setDuracao(e.target.value)
-        }
-        if(e.target.name === "preco"){
-            setPreco(e.target.value)
-        }
-        
-    }
-
+        fetchData();
+    }, []);
     return (
         <div>
-            <Header />
             <main className={styles.main}>
-                <div className="container">
-                    <div className='card'>
-                        <div className='card-body'>
-                            <h5 className='card-tittle'>Atualizar Serviço</h5>
-                            <form onSubmit={atualizar} className='row g-3'>
-                            <div className='col-6'>
-                                    <label htmlFor="nome" className='from-label'>Nome</label>
-                                    <input 
-                                    type="text" 
-                                    name='nome' 
-                                    className='form-control'
-                                    required 
-                                    onChange={handleState}
-                                    value={nome}
-                                    />                                    
-                                </div>
-                                <div className='col-6'>
-                                    <label htmlFor="celular" className='from-label'>descrição</label>
-                                    <input 
-                                    type="text" 
-                                    name='descricao' 
-                                    className='form-control'
-                                    required 
-                                    onChange={handleState}
-                                    value={descricao}
-                                    />                                    
-                                </div>
-                                <div className='col-6'>
-                                    <label htmlFor="duracao" className='from-label'>duração</label>
-                                    <input 
-                                    type="text" 
-                                    name='duracao' 
-                                    className='form-control'
-                                    required 
-                                    onChange={handleState}
-                                    value={duracao}
-                                    />                                    
-                                </div>
-                                <div className='col-6'>
-                                    <label htmlFor="preco" className='from-label'>preço</label>
-                                    <input 
-                                    type="text" 
-                                    name='preco' 
-                                    className='form-control'
-                                    required 
-                                    onChange={handleState}
-                                    value={preco}
-                                    />                                    
-                                </div>
-                                <div className='col-12'>
-                                    <button type='submit' className='btn btn-success btn-sm'>Atualizar</button>
-                                </div>
-                            </form>
+                <div className='container'>
+                    <div className='col-md mb-3'>
+                        <div className='card'>
+                            <div className='card-body'>
+                                <h5 className='card-title'>Pesquisar</h5>
+                                <form onSubmit={buscar} className='row'>
+                                    <div className='col-10'>
+                                        <input type="text" name='pesquisaAgenda' className='form-control'
+                                            onChange={handleState} />
+
+                                    </div>
+                                    <div className='col-1'>
+                                        <button type='submit' className='btn btn-success'>Pesquisar</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='container'>
+                        <div className='card'>
+                            <div className='card-body '>
+                                <h5 className='card-title'>
+                                    Listagem das Agenda
+                                </h5>
+                                <table className='table table-hover '>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>profissional_Id</th>
+                                            <th>cliente_Id</th>
+                                            <th>servico_Id</th>
+                                            <th>dataHora</th>
+                                            <th>pagamento</th>
+                                            <th>valor</th> 
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {agenda.map(agenda => (
+                                            <tr key={agenda.id}>
+                                                <td>{agenda.id}</td>
+                                                <td>{agenda.profissional_Id}</td>
+                                                <td>{agenda.cliente_Id}</td>
+                                                <td>{agenda.servico_Id}</td>
+                                                <td>{agenda.dataHora}</td>
+                                                <td>{agenda.pagamento}</td>
+                                                <td>{agenda.valor}</td>
+
+                                                <td>
+                                                <a onClick={e => handleDelete(agenda.id)} className='btn btn-danger btn-sm'>Excluir</a>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </main>
-            <Footer />
         </div>
     );
 }
-
-export default EditarProfissional;
+export default ListagemAgenda;

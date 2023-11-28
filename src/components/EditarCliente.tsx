@@ -60,7 +60,7 @@ const EditarCliente = () => {
             }
         }).then(function(response){
             console.log(response.data)
-            window.location.href = "/listagem"
+            window.location.href = "/cliente/listagem"
         }).catch(function(error){
             console.log('Ocorreu um erro ao atualizar');
         });
