@@ -5,6 +5,7 @@ import React, {
 import { Link } from "react-router-dom";
 import styles from '../App.module.css';
 import { CadastroProfissionaisInterface } from "../interface/CadastroProfissionais";
+import { log } from "console";
 
 const ListagemProfissionais = () => {
     const [profissionais, setProfissionais] = useState<CadastroProfissionaisInterface[]>([]);
@@ -81,8 +82,15 @@ const ListagemProfissionais = () => {
         async function fetchData() {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/api/profissional/retornarTodos');
-                console.log(response);
-                setProfissionais(response.data.data);
+                if(response.data.status === true){
+                    console.log(response);
+                    setProfissionais(response.data.data);
+                }
+                else{
+                    console.log("erro");
+                    
+                }
+                
             } catch (error) {
                 setError("Ocorreu um erro");
                 console.log(error)
@@ -144,7 +152,7 @@ const ListagemProfissionais = () => {
                                                 <td>{profissionais.cpf}</td>
 
                                                 <td>
-                                                <Link to={"/editar/Servico/"+ profissionais.id}  className='btn btn-primary btn-sm' >Editar</Link>
+                                                <Link to={"/profissional/editar/"+ profissionais.id}  className='btn btn-primary btn-sm' >Editar</Link>
                                                 <a onClick={e => handleDelete(profissionais.id)} className='btn btn-danger btn-sm'>Excluir</a>
                                                 <a onClick={e => RedefinirSenha(profissionais.id)} className='btn btn-secondary btn-sm'>Redefinir Senha</a>
                                                 </td>

@@ -67,8 +67,14 @@ const ListagemServicos = () => {
         async function fetchData() {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/api/servico/retornarTodos');
-                console.log(response.data.data);
-                setServicos(response.data.data);
+                if(response.data.status === true){
+                    console.log(response);
+                    setServicos(response.data.data);
+                }
+                else{
+                    console.log("erro");
+                    
+                }
             } catch (error) {
                 setError("Ocrreu um erro");
                 console.log(error)

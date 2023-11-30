@@ -80,8 +80,14 @@ const ListagemClientes = () => {
         async function fetchData() {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/api/cliente/retornarTudo');
-                console.log(response.data.data);
-                setClientes(response.data.data);
+                if(response.data.status === true){
+                    console.log(response);
+                    setClientes(response.data.data);
+                }
+                else{
+                    console.log("erro");
+                    
+                }
             } catch (error) {
                 setError("Ocorreu um erro");
                 console.log(error)

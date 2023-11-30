@@ -58,7 +58,7 @@ const CadastroProfssional = () => {
         }
         ).then(function(response){
             console.log(response.data)
-            if(response.data.success == true){
+            if(response.data.status == true){
             window.location.href = "/listagem/Profissional"
             }else{
                 console.log(response.data)
