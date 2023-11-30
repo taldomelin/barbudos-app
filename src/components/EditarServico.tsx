@@ -8,17 +8,25 @@ import axios from "axios";
 
 
 
-const EditarProfissional = () => {
+const EditarServico = () => {
 
     const [nome, setNome] = useState<string>("");
     const [descricao, setDescricao] = useState<string>("");
     const [duracao, setDuracao] = useState<string>("");
     const [preco, setPreco] = useState<string>("");
     const [id, setId] = useState<string>();
+    const [nomeErro, setErroNome] = useState<string>("");
+    const [descricaoErro,setDescricaoErro] = useState<string>("");
+    const [duracaoErro,setDuracaoErro] = useState<string>("");
+    const [precoErro,setPrecoErro] = useState<string>("");
 
     const parametro = useParams();
 
     const atualizar = (e: FormEvent) => {
+        setErroNome("")
+        setDescricaoErro("")
+        setDuracaoErro("")
+        setPrecoErro("")
 
         e.preventDefault();
 
@@ -38,9 +46,24 @@ const EditarProfissional = () => {
                 "Content-Type": "application/json"
             }
         }).then(function(response){
-            window.location.href = "/listagem/Servico";
+            if (response.data.success === false) {
+                if ('nome' in response.data.error) {
+                    setErroNome(response.data.error.nome[0])
+                }
+                if ('celular' in response.data.error) {
+                    setDescricaoErro(response.data.error.celular[0])
+                }
+                if ('email' in response.data.error) {
+                    setDuracaoErro(response.data.error.email[0])
+                }
+                if ('cpf' in response.data.error) {
+                    setPrecoErro(response.data.error.cpf[0])
+                }
+            } else {
+            window.location.href = "/listagem/Servico"
+            }
         }).catch(function(error){
-            console.log('Ocorreu um erroao atualizar');
+            console.log(error);
         });
 
     }
@@ -98,7 +121,8 @@ const EditarProfissional = () => {
                                     required 
                                     onChange={handleState}
                                     value={nome}
-                                    />                                    
+                                    />      
+                                    <div className='text-danger'>{nomeErro}</div>                               
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="celular" className='from-label'>descrição</label>
@@ -109,7 +133,8 @@ const EditarProfissional = () => {
                                     required 
                                     onChange={handleState}
                                     value={descricao}
-                                    />                                    
+                                    />         
+                                    <div className='text-danger'>{descricaoErro}</div>                            
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="duracao" className='from-label'>duração</label>
@@ -120,7 +145,8 @@ const EditarProfissional = () => {
                                     required 
                                     onChange={handleState}
                                     value={duracao}
-                                    />                                    
+                                    />     
+                                    <div className='text-danger'>{duracaoErro}</div>                                
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="preco" className='from-label'>preço</label>
@@ -131,7 +157,8 @@ const EditarProfissional = () => {
                                     required 
                                     onChange={handleState}
                                     value={preco}
-                                    />                                    
+                                    />         
+                                    <div className='text-danger'>{precoErro}</div>                            
                                 </div>
                                 <div className='col-12'>
                                     <button type='submit' className='btn btn-success btn-sm'>Atualizar</button>
@@ -146,4 +173,4 @@ const EditarProfissional = () => {
     );
 }
 
-export default EditarProfissional;
+export default EditarServico;

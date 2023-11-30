@@ -24,8 +24,37 @@ const CadastroCliente = () => {
     const [localidade, setLocalidade] = useState<string>("");
     const [uf, setUf] = useState<string>("");
     const [erro, setErro] = useState<string>("");
+    const [nomeErro, setNomeErro] = useState<string>("");
+    const [celularErro,setCelularErro] = useState<string>("");
+    const [emailErro,setEmailErro] = useState<string>("");
+    const [cpfErro,setCpfErro] = useState<string>("");
+    const [nascimentoErro,setNascimentoErro] = useState<string>("");
+    const [cidadeErro,setCidadeErro] = useState<string>("");
+    const [estadoErro,setEstadoErro] = useState<string>("");
+    const [paisErro,setPaisErro] = useState<string>("");
+    const [ruaErro,setRuaErro] = useState<string>("");
+    const [numeroErro,setNumeroErro] = useState<string>("");
+    const [bairroErro,setBairroErro] = useState<string>("");
+    const [cepErro,setCepErro] = useState<string>("");
+    const [complementoErro,setComplementoErro] = useState<string>("");
+    const [passwordErro,setPasswordErro] = useState<string>("");
     
     const cadastrarCliente = (e: FormEvent) => {
+        setNomeErro("")
+        setCelularErro("")
+        setEmailErro("")
+        setCpfErro("")
+        setNascimentoErro("")
+        setCidadeErro("")
+        setEstadoErro("")
+        setPaisErro("")
+        setRuaErro("")
+        setNumeroErro("")
+        setBairroErro("")
+        setCepErro("")
+        setComplementoErro("")
+        setPasswordErro("")
+
         e.preventDefault();
 
         const dados = {
@@ -55,10 +84,54 @@ const CadastroCliente = () => {
                 "Content-Type": "aplication/json"
             }
         }
-        ).then(function(response){
-            console.log(response.data)
-            window.location.href = "/cliente/listagem"
-        }).catch(function(error){
+        ).then(function (response) {
+            if (response.data.success === false) {
+                if ('nome' in response.data.error) {
+                    setNomeErro(response.data.error.nome[0])
+                }
+                if ('celular' in response.data.error) {
+                    setCelularErro(response.data.error.celular[0])
+                }
+                if ('email' in response.data.error) {
+                    setEmailErro(response.data.error.email[0])
+                }
+                if ('cpf' in response.data.error) {
+                    setCpfErro(response.data.error.cpf[0])
+                }
+                if ('nascimento' in response.data.error) {
+                    setNascimentoErro(response.data.error.nascimento[0])
+                }
+                if ('cidade' in response.data.error) {
+                    setCidadeErro(response.data.error.cidade[0])
+                }
+                if ('estado' in response.data.error) {
+                    setEstadoErro(response.data.error.estado[0])
+                }
+                if ('pais' in response.data.error) {
+                    setPaisErro(response.data.error.pais[0])
+                }
+                if ('rua' in response.data.error) {
+                    setRuaErro(response.data.error.rua[0])
+                }
+                if ('numero' in response.data.error) {
+                    setNumeroErro(response.data.error.numero[0])
+                }
+                if ('bairro' in response.data.error) {
+                    setBairroErro(response.data.error.bairro[0])
+                }
+                if ('cep' in response.data.error) {
+                    setCepErro(response.data.error.cep[0])
+                }
+                if ('complemento' in response.data.error) {
+                    setComplementoErro(response.data.error.complemento[0])
+                }
+                if ('password' in response.data.error) {
+                    setPasswordErro(response.data.error.password[0])
+                }
+            } else {
+                window.location.href = "/cliente/listagem"
+            }
+        }).catch(function (error) {
             console.log(error)
         })
     }
@@ -149,7 +222,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />     
+                                     <div className='text-danger'>{nomeErro}</div>                               
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="celular" className='from-label'>Celular</label>
@@ -159,7 +233,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />    
+                                     <div className='text-danger'>{celularErro}</div>                                
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="email" className='from-label'>E-mail</label>
@@ -169,7 +244,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />   
+                                     <div className='text-danger'>{emailErro}</div>                                 
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="cpf" className='from-label'>CPF</label>
@@ -179,7 +255,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />   
+                                     <div className='text-danger'>{cpfErro}</div>                                 
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="nascimento" className='from-label'>Nascimento</label>
@@ -189,7 +266,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />  
+                                     <div className='text-danger'>{nascimentoErro}</div>                                  
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="cidade" className='from-label'>Cidade</label>
@@ -200,7 +278,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />  
+                                     <div className='text-danger'>{cidadeErro}</div>                                  
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="estado" className='from-label'>Estado</label>
@@ -211,7 +290,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />  
+                                     <div className='text-danger'>{estadoErro}</div>                                  
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="pais" className='from-label'>Pais</label>
@@ -222,7 +302,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />  
+                                     <div className='text-danger'>{paisErro}</div>                                  
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="rua" className='from-label'>Rua</label>
@@ -233,7 +314,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    /> 
+                                     <div className='text-danger'>{ruaErro}</div>                                   
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="numero" className='from-label'>Numero</label>
@@ -243,7 +325,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />    
+                                     <div className='text-danger'>{numeroErro}</div>                                
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="bairro" className='from-label'>Bairro</label>
@@ -254,7 +337,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />      
+                                     <div className='text-danger'>{bairroErro}</div>                              
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="cep" className='from-label'>CEP</label>
@@ -265,7 +349,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />     
+                                     <div className='text-danger'>{cepErro}</div>                               
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="complemento" className='from-label'>Complemento</label>
@@ -275,7 +360,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    />  
+                                     <div className='text-danger'>{complementoErro}</div>                                  
                                 </div>
                                 <div className='col-6'>
                                     <label htmlFor="password" className='from-label'>Senha</label>
@@ -285,7 +371,8 @@ const CadastroCliente = () => {
                                     className='form-control'
                                     required 
                                     onChange={handleState}
-                                    />                                    
+                                    /> 
+                                     <div className='text-danger'>{passwordErro}</div>                                   
                                 </div>
                                 
                                
